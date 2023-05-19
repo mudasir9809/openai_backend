@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "server": "nodemon server",
-    "vercel-build":"echo hello"
+    "server": "nodemon server"
   },
   "dependencies": {
     "cors": "^2.8.5",
