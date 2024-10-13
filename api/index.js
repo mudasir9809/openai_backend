@@ -1,9 +1,7 @@
 import express from 'express'
-import * as dotenv from 'dotenv'
 import cors from 'cors'
 import { Configuration, OpenAIApi } from 'openai'
 
-dotenv.config()
 
 const configuration = new Configuration({
   apiKey: 	'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',
