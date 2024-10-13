@@ -1,50 +1,56 @@
-import express from 'express'
-import cors from 'cors'
-import { Configuration, OpenAIApi } from 'openai'
+import express from 'express';
+import cors from 'cors';
+import axios from 'axios';
 
 
-const configuration = new Configuration({
-  apiKey: 	'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',
-});
-
-const openai = new OpenAIApi(configuration);
-
-const app = express()
-app.use(cors({
-  "Access-Control-Allow-Origin":"https://localhost:3000"
-}))
-app.use(express.json())
+const app = express();
+app.use(cors());
+app.use(express.json());
 
 app.get('/', async (req, res) => {
   res.status(200).send({
     message: 'Hello from CodeX!'
-  })
-})
+  });
+});
 
 app.post('/', async (req, res) => {
   try {
     const prompt = req.body.prompt;
 
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: `${prompt}`,
-      temperature: 0, // Higher values means the model will take more risks.
-      max_tokens: 3000, // The maximum number of tokens to generate in the completion. Most models have a context length of 2048 tokens (except for the newest models, which support 4096).
-      top_p: 1, // alternative to sampling with temperature, called nucleus sampling
-      frequency_penalty: 0.5, // Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
-      presence_penalty: 0, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
-    });
+    const options = {
+      method: 'POST',
+      url: 'https://cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com/v1/chat/completions',
+      headers: {
+        'x-rapidapi-key': '76927071ecmshaf14e43307e4345p1facd0jsn98489a5127ca', // Use environment variable for the API key
+        'x-rapidapi-host': 'cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com',
+        'Content-Type': 'application/json',
+      },
+      data: {
+        messages: [
+          {
+            role: 'user',
+            content: prompt, // Use the prompt from the request body
+          },
+        ],
+        model: 'gpt-4o', // Change this to the appropriate model if needed
+        max_tokens: 700,
+        temperature: 0.9,
+      },
+    };
+
+    const response = await axios(options);
 
     res.status(200).send({
-      bot: response.data.choices[0].text
+      bot: response.data.choices[0].message.content // Adjust based on the API response structure
     });
 
   } catch (error) {
-    console.error(error)
-    res.status(500).send(error || 'Something went wrong');
+    console.error('Error:', error.response ? error.response.data : error.message);
+    res.status(500).send('Error communicating with the API');
   }
-})
+});
 
-app.listen(5000, () => console.log('AI server started on http://localhost:5000'))
+const PORT = process.env.PORT || 5000; // Use environment variable for the port
+app.listen(PORT, () => console.log(`AI server started on http://localhost:${PORT}`));
 
-export default app;
+export default  app
