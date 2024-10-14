@@ -21,7 +21,7 @@ app.post('/', async (req, res) => {
       method: 'POST',
       url: 'https://cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com/v1/chat/completions',
       headers: {
-        'x-rapidapi-key': '76927071ecmshaf14e43307e4345p1facd0jsn98489a5127ca', // Use environment variable for the API key
+        'x-rapidapi-key': 'e7adabe75cmsh1c43af20b617085p1a8147jsn8a4140316446', // Use environment variable for the API key
         'x-rapidapi-host': 'cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com',
         'Content-Type': 'application/json',
       },
